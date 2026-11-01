@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddHttpClient();
+
 builder.Logging.ClearProviders();
 
 var logger = new LoggerConfiguration()

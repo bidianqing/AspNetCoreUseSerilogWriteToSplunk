@@ -4,24 +4,22 @@ namespace AspNetCoreUseSerilogWriteToSplunk.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController(IHttpClientFactory httpClientFactory, ILogger<WeatherForecastController> logger) : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            _logger.LogInformation("Test logging");
+            var client = httpClientFactory.CreateClient();
+            await client.GetAsync("https://www.baidu.com");
+
+
+            logger.LogInformation("Test logging");
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
